@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.6
+    ports:
+     - "27017:27017"
+  apartment-management-init:
+    image: apartment-management-init
+    links:
+      - "mongodb:mongo"
+    depends_on:
+      - mongodb
+  apartment-management-api:
+    image: apartment-management-api
+    ports:
+     - "3001:3001"
+    links:
+      - "mongodb:mongo"
+    environment:
+      - MONGO_URI="mongo:27017"
+    depends_on:
+      - mongodb
+      - apartment-management-init
