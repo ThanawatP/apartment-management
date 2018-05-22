@@ -4,20 +4,35 @@ services:
     image: mongo:3.6
     ports:
      - "27017:27017"
-  apartment-management-init:
-    image: apartment-management-init
-    links:
-      - "mongodb:mongo"
-    depends_on:
-      - mongodb
   apartment-management-api:
-    image: apartment-management-api
+    build: https://github.com/ThanawatP/apartment-management-api.git
+    # image: apartment-management_apartment-management-api
     ports:
      - "3001:3001"
     links:
       - "mongodb:mongo"
     environment:
-      - MONGO_URI="mongo:27017"
+      - MONGO_URI=mongo
     depends_on:
       - mongodb
+  apartment-management-init:
+    build: https://github.com/ThanawatP/apartment-management-init.git
+    # image: apartment-management-init
+    links:
+      - "mongodb:mongo"
+      - apartment-management-api
+    environment:
+      - API_HOST=apartment-management-api
+      - API_PORT=3001
+    depends_on:
+      - apartment-management-api
+  apartment-management-angular:
+    build: https://github.com/ThanawatP/apartment-management-angular.git
+    # image: apartment-management-angular
+    ports:
+     - "80:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - apartment-management-api
       - apartment-management-init
