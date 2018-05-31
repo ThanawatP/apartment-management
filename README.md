@@ -11,6 +11,10 @@ It composes of 4 parts
 docker-compose up -d
 ```
 It might take a long time in first running because of building docker image processes.
+After finish running process, open browser and access
+```
+localhost
+```
 
 # Deployment without using docker compose
 You have to clone each projects from above links and follow these steps
